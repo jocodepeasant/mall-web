@@ -19,7 +19,7 @@ export function fetchSelectList(params) {
 export function updateStatus(id, params) {
   return request({
     url: '/flashSession/update/status/' + id,
-    method: 'post',
+    method: 'put',
     params: params
   })
 }
@@ -27,7 +27,7 @@ export function updateStatus(id, params) {
 export function deleteSession(id) {
   return request({
     url: '/flashSession/delete/' + id,
-    method: 'post'
+    method: 'delete'
   })
 }
 
@@ -42,7 +42,7 @@ export function createSession(data) {
 export function updateSession(id, data) {
   return request({
     url: '/flashSession/update/' + id,
-    method: 'post',
+    method: 'put',
     data: data
   })
 }

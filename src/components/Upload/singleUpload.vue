@@ -1,7 +1,7 @@
 <template> 
   <div>
     <el-upload
-      action="http://macro-oss.oss-cn-shenzhen.aliyuncs.com"
+      action="http://jocodepeasant-oss.oss-cn-qingdao.aliyuncs.com"
       :data="dataObj"
       list-type="picture"
       :multiple="false" :show-file-list="showFileList"
@@ -85,7 +85,7 @@
             _self.dataObj.key = response.data.dir + '/${filename}';
             _self.dataObj.dir = response.data.dir;
             _self.dataObj.host = response.data.host;
-            // _self.dataObj.callback = response.data.callback;
+            /*_self.dataObj.callback = response.data.callback;*/
             resolve(true)
           }).catch(err => {
             console.log(err)

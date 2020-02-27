@@ -18,14 +18,14 @@ export function createProductAttrCate(data) {
 export function deleteProductAttrCate(id) {
   return request({
     url:'/productAttribute/category/delete/'+id,
-    method:'get'
+    method:'delete'
   })
 }
 
 export function updateProductAttrCate(id,data) {
   return request({
     url:'/productAttribute/category/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }

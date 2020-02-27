@@ -10,7 +10,7 @@ export function fetchList(params) {
 export function updateRecommendStatus(data) {
   return request({
     url:'/home/recommendProduct/update/recommendStatus',
-    method:'post',
+    method:'put',
     data:data
   })
 }
@@ -18,7 +18,7 @@ export function updateRecommendStatus(data) {
 export function deleteHotProduct(data) {
   return request({
     url:'/home/recommendProduct/delete',
-    method:'post',
+    method:'delete',
     data:data
   })
 }
@@ -34,7 +34,7 @@ export function createHotProduct(data) {
 export function updateHotProductSort(params) {
   return request({
     url:'/home/recommendProduct/update/sort/'+params.id,
-    method:'post',
+    method:'put',
     params:params
   })
 }

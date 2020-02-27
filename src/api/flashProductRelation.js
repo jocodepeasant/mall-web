@@ -16,13 +16,13 @@ export function createFlashProductRelation(data) {
 export function deleteFlashProductRelation(id) {
   return request({
     url:'/flashProductRelation/delete/'+id,
-    method:'post'
+    method:'delete'
   })
 }
 export function updateFlashProductRelation(id,data) {
   return request({
     url:'/flashProductRelation/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }

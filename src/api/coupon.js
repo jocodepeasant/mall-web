@@ -25,7 +25,7 @@ export function getCoupon(id) {
 export function updateCoupon(id,data) {
   return request({
     url:'/coupon/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }
@@ -33,6 +33,6 @@ export function updateCoupon(id,data) {
 export function deleteCoupon(id) {
   return request({
     url:'/coupon/delete/'+id,
-    method:'post',
+    method:'delete',
   })
 }

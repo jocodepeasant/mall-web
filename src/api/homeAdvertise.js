@@ -9,14 +9,14 @@ export function fetchList(params) {
 export function updateStatus(id,params) {
   return request({
     url:'/home/advertise/update/status/'+id,
-    method:'post',
+    method:'put',
     params:params
   })
 }
 export function deleteHomeAdvertise(data) {
   return request({
     url:'/home/advertise/delete',
-    method:'post',
+    method:'delete',
     data:data
   })
 }
@@ -37,7 +37,7 @@ export function getHomeAdvertise(id) {
 export function updateHomeAdvertise(id,data) {
   return request({
     url:'/home/advertise/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }

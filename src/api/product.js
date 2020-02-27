@@ -18,7 +18,7 @@ export function fetchSimpleList(params) {
 export function updateDeleteStatus(params) {
   return request({
     url:'/product/update/deleteStatus',
-    method:'post',
+    method:'put',
     params:params
   })
 }
@@ -26,7 +26,7 @@ export function updateDeleteStatus(params) {
 export function updateNewStatus(params) {
   return request({
     url:'/product/update/newStatus',
-    method:'post',
+    method:'put',
     params:params
   })
 }
@@ -34,7 +34,7 @@ export function updateNewStatus(params) {
 export function updateRecommendStatus(params) {
   return request({
     url:'/product/update/recommendStatus',
-    method:'post',
+    method:'put',
     params:params
   })
 }
@@ -42,7 +42,7 @@ export function updateRecommendStatus(params) {
 export function updatePublishStatus(params) {
   return request({
     url:'/product/update/publishStatus',
-    method:'post',
+    method:'put',
     params:params
   })
 }
@@ -58,7 +58,7 @@ export function createProduct(data) {
 export function updateProduct(id,data) {
   return request({
     url:'/product/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }

@@ -9,7 +9,7 @@ export function getOrderSetting(id) {
 export function updateOrderSetting(id,data) {
   return request({
     url:'/orderSetting/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }

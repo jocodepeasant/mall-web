@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
-  timeout: 15000 // 请求超时时间
+  timeout: 30000 // 请求超时时间
 })
 
 // request拦截器
@@ -28,7 +28,9 @@ service.interceptors.response.use(
   * code为非200是抛错 可结合自己业务进行修改
   */
     const res = response.data
-    if (res.code !== 200) {
+    const reg1=/[4,5]\d\d/
+    const reg2=/20[1-9]|2[1-9]0/
+    if (reg1.test(res.code) ){
       Message({
         message: res.message,
         type: 'error',
@@ -48,7 +50,15 @@ service.interceptors.response.use(
         })
       }
       return Promise.reject('error')
-    } else {
+    }
+    else if(reg2.test(res.code)) {
+      Message({
+        message: res.message,
+        type: 'success',
+        duration: 3 * 1000
+      })
+      return response.data
+    }else{
       return response.data
     }
   },

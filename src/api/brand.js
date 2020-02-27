@@ -16,7 +16,7 @@ export function createBrand(data) {
 export function updateShowStatus(data) {
   return request({
     url:'/brand/update/showStatus',
-    method:'post',
+    method:'put',
     data:data
   })
 }
@@ -24,7 +24,7 @@ export function updateShowStatus(data) {
 export function updateFactoryStatus(data) {
   return request({
     url:'/brand/update/factoryStatus',
-    method:'post',
+    method:'put',
     data:data
   })
 }
@@ -46,7 +46,7 @@ export function getBrand(id) {
 export function updateBrand(id,data) {
   return request({
     url:'/brand/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }

@@ -10,14 +10,14 @@ export function fetchList(params) {
 export function deleteApply(params) {
   return request({
     url:'/returnApply/delete',
-    method:'post',
+    method:'delete',
     params:params
   })
 }
 export function updateApplyStatus(id,data) {
   return request({
     url:'/returnApply/update/status/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }

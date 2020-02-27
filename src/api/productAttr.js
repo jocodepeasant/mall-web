@@ -10,7 +10,7 @@ export function fetchList(cid,params) {
 export function deleteProductAttr(data) {
   return request({
     url:'/productAttribute/delete',
-    method:'post',
+    method:'delete',
     data:data
   })
 }
@@ -26,7 +26,7 @@ export function createProductAttr(data) {
 export function updateProductAttr(id,data) {
   return request({
     url:'/productAttribute/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }

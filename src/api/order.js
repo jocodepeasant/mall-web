@@ -10,7 +10,7 @@ export function fetchList(params) {
 export function closeOrder(params) {
   return request({
     url:'/order/update/close',
-    method:'post',
+    method:'put',
     params:params
   })
 }
@@ -18,7 +18,7 @@ export function closeOrder(params) {
 export function deleteOrder(params) {
   return request({
     url:'/order/delete',
-    method:'post',
+    method:'delete',
     params:params
   })
 }
@@ -26,7 +26,7 @@ export function deleteOrder(params) {
 export function deliveryOrder(data) {
   return request({
     url:'/order/update/delivery',
-    method:'post',
+    method:'put',
     data:data
   });
 }
@@ -41,7 +41,7 @@ export function getOrderDetail(id) {
 export function updateReceiverInfo(data) {
   return request({
     url:'/order/update/receiverInfo',
-    method:'post',
+    method:'put',
     data:data
   });
 }
@@ -49,7 +49,7 @@ export function updateReceiverInfo(data) {
 export function updateMoneyInfo(data) {
   return request({
     url:'/order/update/moneyInfo',
-    method:'post',
+    method:'put',
     data:data
   });
 }
@@ -57,7 +57,7 @@ export function updateMoneyInfo(data) {
 export function updateOrderNote(params) {
   return request({
     url:'/order/update/note',
-    method:'post',
+    method:'put',
     params:params
   })
 }

@@ -9,14 +9,14 @@ export function fetchList(params) {
 export function updateStatus(id,params) {
   return request({
     url:'/flash/update/status/'+id,
-    method:'post',
+    method:'put',
     params:params
   })
 }
 export function deleteFlash(id) {
   return request({
     url:'/flash/delete/'+id,
-    method:'post'
+    method:'delete'
   })
 }
 export function createFlash(data) {
@@ -29,7 +29,7 @@ export function createFlash(data) {
 export function updateFlash(id,data) {
   return request({
     url:'/flash/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }

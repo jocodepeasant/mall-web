@@ -9,7 +9,7 @@ export function fetchList(parentId,params) {
 export function deleteProductCate(id) {
   return request({
     url:'/productCategory/delete/'+id,
-    method:'post'
+    method:'delete'
   })
 }
 
@@ -24,7 +24,7 @@ export function createProductCate(data) {
 export function updateProductCate(id,data) {
   return request({
     url:'/productCategory/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }
@@ -39,7 +39,7 @@ export function getProductCate(id) {
 export function updateShowStatus(data) {
   return request({
     url:'/productCategory/update/showStatus',
-    method:'post',
+    method:'put',
     data:data
   })
 }
@@ -47,7 +47,7 @@ export function updateShowStatus(data) {
 export function updateNavStatus(data) {
   return request({
     url:'/productCategory/update/navStatus',
-    method:'post',
+    method:'put',
     data:data
   })
 }

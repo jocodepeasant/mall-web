@@ -10,7 +10,7 @@ export function fetchList(params) {
 export function deleteReason(params) {
   return request({
     url:'/returnReason/delete',
-    method:'post',
+    method:'delete',
     params:params
   })
 }
@@ -18,7 +18,7 @@ export function deleteReason(params) {
 export function updateStatus(params) {
   return request({
     url:'/returnReason/update/status',
-    method:'post',
+    method:'put',
     params:params
   })
 }
@@ -41,7 +41,7 @@ export function getReasonDetail(id) {
 export function updateReason(id,data) {
   return request({
     url:'/returnReason/update/'+id,
-    method:'post',
+    method:'put',
     data:data
   })
 }

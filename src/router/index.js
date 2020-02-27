@@ -20,6 +20,7 @@ import Layout from '../views/layout/Layout'
  **/
 export const constantRouterMap = [
   {path: '/login', component: () => import('@/views/login/index'), hidden: true},
+  {path: '/register', component: () => import('@/views/register/index')},
   {path: '/404', component: () => import('@/views/404'), hidden: true},
   {
     path: '',
@@ -31,6 +32,33 @@ export const constantRouterMap = [
       component: () => import('@/views/home/index'),
       meta: {title: '首页', icon: 'home'}
     }]
+  },
+  {
+    path: '/sys',
+    component: Layout,
+    redirect: '/sys/admin',
+    name: 'sys',
+    meta: {title: '系统管理', icon: 'sys'},
+    children: [
+      {
+        path: 'admin',
+        name: 'admin',
+        component: () => import('@/views/sys/admin/index'),
+        meta: {title: '用户管理', icon: 'admin'}
+      },
+      {
+        path: 'log',
+        name: 'log',
+        component: () => import('@/views/sys/log/index'),
+        meta: {title: '操作日志',icon:'log'},
+      },
+      {
+        path: 'role',
+        name: 'role',
+        component: () => import('@/views/sys/role/index'),
+        meta: {title: '角色管理',icon:'role'},
+      }
+    ]
   },
   {
     path: '/pms',
@@ -255,7 +283,7 @@ export const constantRouterMap = [
         meta: {title: '优惠券领取详情'},
         hidden:true
       },
-      {
+      /*{
         path: 'brand',
         name: 'homeBrand',
         component: () => import('@/views/sms/brand/index'),
@@ -298,7 +326,7 @@ export const constantRouterMap = [
         component: () => import('@/views/sms/advertise/update'),
         meta: {title: '编辑广告'},
         hidden:true
-      }
+      }*/
     ]
   },
   {path: '*', redirect: '/404', hidden: true}
