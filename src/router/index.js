@@ -57,6 +57,53 @@ export const constantRouterMap = [
         name: 'role',
         component: () => import('@/views/sys/role/index'),
         meta: {title: '角色管理',icon:'role'},
+      },
+      {
+        path: 'allocMenu',
+        name: 'allocMenu',
+        component: () => import('@/views/sys/role/allocMenu'),
+        meta: {title: '分配菜单'},
+        hidden: true
+      },
+      {
+        path: 'allocResource',
+        name: 'allocResource',
+        component: () => import('@/views/sys/role/allocResource'),
+        meta: {title: '分配资源'},
+        hidden: true
+      },
+      /*{
+        path: 'menu',
+        name: 'menu',
+        component: () => import('@/views/sys/menu/index'),
+        meta: {title: '菜单列表', icon: 'ums-menu'}
+      },*/
+      {
+        path: 'addMenu',
+        name: 'addMenu',
+        component: () => import('@/views/sys/menu/add'),
+        meta: {title: '添加菜单'},
+        hidden: true
+      },
+      {
+        path: 'updateMenu',
+        name: 'updateMenu',
+        component: () => import('@/views/sys/menu/update'),
+        meta: {title: '修改菜单'},
+        hidden: true
+      },
+      /*{
+        path: 'resource',
+        name: 'resource',
+        component: () => import('@/views/sys/resource/index'),
+        meta: {title: '资源列表', icon: 'ums-resource'}
+      },*/
+      {
+        path: 'resourceCategory',
+        name: 'resourceCategory',
+        component: () => import('@/views/sys/resource/categoryList'),
+        meta: {title: '资源分类'},
+        hidden: true
       }
     ]
   },

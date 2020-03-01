@@ -1,4 +1,4 @@
-<template> 
+<template>
   <div class="app-container">
     <el-card class="filter-container" shadow="never">
       <div>
@@ -21,37 +21,7 @@
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
           <el-form-item label="输入搜索：">
-            <el-input v-model="listQuery.id" class="input-width" placeholder="服务单号"></el-input>
-          </el-form-item>
-          <el-form-item label="处理状态：">
-            <el-select v-model="listQuery.status" placeholder="全部" clearable class="input-width">
-              <el-option v-for="item in statusOptions"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="申请时间：">
-            <el-date-picker
-              class="input-width"
-              v-model="listQuery.createTime"
-              value-format="yyyy-MM-dd"
-              type="date"
-              placeholder="请选择时间">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="操作人员：">
-            <el-input v-model="listQuery.handleMan" class="input-width" placeholder="全部"></el-input>
-          </el-form-item>
-          <el-form-item label="处理时间：">
-            <el-date-picker
-              class="input-width"
-              v-model="listQuery.handleTime"
-              value-format="yyyy-MM-dd"
-              type="date"
-              placeholder="请选择时间">
-            </el-date-picker>
+            <el-input v-model="listQuery.keyword" class="input-width" placeholder="帐号/姓名" clearable></el-input>
           </el-form-item>
         </el-form>
       </div>
@@ -59,60 +29,59 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>数据列表</span>
+      <el-button size="mini" class="btn-add" @click="handleAdd()" style="margin-left: 20px">添加</el-button>
     </el-card>
     <div class="table-container">
-      <el-table ref="returnApplyTable"
+      <el-table ref="adminTable"
                 :data="list"
                 style="width: 100%;"
-                @selection-change="handleSelectionChange"
                 v-loading="listLoading" border>
-        <el-table-column type="selection" width="60" align="center"></el-table-column>
-        <el-table-column label="服务单号" width="180" align="center">
+        <el-table-column label="编号" width="100" align="center">
           <template slot-scope="scope">{{scope.row.id}}</template>
         </el-table-column>
-        <el-table-column label="申请时间" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.createTime | formatTime}}</template>
+        <el-table-column label="帐号" align="center">
+          <template slot-scope="scope">{{scope.row.username}}</template>
         </el-table-column>
-        <el-table-column label="用户账号" align="center">
-          <template slot-scope="scope">{{scope.row.memberUsername}}</template>
+        <el-table-column label="姓名" align="center">
+          <template slot-scope="scope">{{scope.row.nickName}}</template>
         </el-table-column>
-        <el-table-column label="退款金额" width="180" align="center">
-          <template slot-scope="scope">￥{{scope.row | formatReturnAmount}}</template>
+        <el-table-column label="邮箱" align="center">
+          <template slot-scope="scope">{{scope.row.email}}</template>
         </el-table-column>
-        <el-table-column label="申请状态" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.status | formatStatus}}</template>
+        <el-table-column label="添加时间" width="160" align="center">
+          <template slot-scope="scope">{{scope.row.createTime | formatDateTime}}</template>
         </el-table-column>
-        <el-table-column label="处理时间" width="180" align="center">
-          <template slot-scope="scope">{{scope.row.handleTime | formatTime}}</template>
+        <el-table-column label="最后登录" width="160" align="center">
+          <template slot-scope="scope">{{scope.row.loginTime | formatDateTime}}</template>
+        </el-table-column>
+        <el-table-column label="是否启用" width="140" align="center">
+          <template slot-scope="scope">
+            <el-switch
+              @change="handleStatusChange(scope.$index, scope.row)"
+              :active-value="1"
+              :inactive-value="0"
+              v-model="scope.row.status">
+            </el-switch>
+          </template>
         </el-table-column>
         <el-table-column label="操作" width="180" align="center">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              @click="handleViewDetail(scope.$index, scope.row)">查看详情</el-button>
+            <el-button size="mini"
+                       type="text"
+                       @click="handleSelectRole(scope.$index, scope.row)">分配角色
+            </el-button>
+            <el-button size="mini"
+                       type="text"
+                       @click="handleUpdate(scope.$index, scope.row)">
+              编辑
+            </el-button>
+            <el-button size="mini"
+                       type="text"
+                       @click="handleDelete(scope.$index, scope.row)">删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
-    </div>
-    <div class="batch-operate-container">
-      <el-select
-        size="small"
-        v-model="operateType" placeholder="批量操作">
-        <el-option
-          v-for="item in operateOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-      <el-button
-        style="margin-left: 20px"
-        class="search-button"
-        @click="handleBatchOperate()"
-        type="primary"
-        size="small">
-        确定
-      </el-button>
     </div>
     <div class="pagination-container">
       <el-pagination
@@ -122,88 +91,115 @@
         layout="total, sizes,prev, pager, next,jumper"
         :current-page.sync="listQuery.pageNum"
         :page-size="listQuery.pageSize"
-        :page-sizes="[5,10,15]"
+        :page-sizes="[10,15,20]"
         :total="total">
       </el-pagination>
     </div>
+    <el-dialog
+      :title="isEdit?'编辑用户':'添加用户'"
+      :visible.sync="dialogVisible"
+      width="40%">
+      <el-form :model="admin"
+               ref="adminForm"
+               label-width="150px" size="small">
+        <el-form-item label="帐号：">
+          <el-input v-model="admin.username" style="width: 250px"></el-input>
+        </el-form-item>
+        <el-form-item label="姓名：">
+          <el-input v-model="admin.nickName" style="width: 250px"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱：">
+          <el-input v-model="admin.email" style="width: 250px"></el-input>
+        </el-form-item>
+        <el-form-item label="密码：">
+          <el-input v-model="admin.password"  type="password" style="width: 250px"></el-input>
+        </el-form-item>
+        <el-form-item label="备注：">
+          <el-input v-model="admin.note"
+                    type="textarea"
+                    :rows="5"
+                    style="width: 250px"></el-input>
+        </el-form-item>
+        <el-form-item label="是否启用：">
+          <el-radio-group v-model="admin.status">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="handleDialogConfirm()" size="small">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="分配角色"
+      :visible.sync="allocDialogVisible"
+      width="30%">
+      <el-select v-model="allocRoleIds" multiple placeholder="请选择" size="small" style="width: 80%">
+        <el-option
+          v-for="item in allRoleList"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
+      </el-select>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="allocDialogVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="handleAllocDialogConfirm()" size="small">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
+    import {fetchList,createAdmin,updateAdmin,updateStatus,deleteAdmin,getRoleByAdmin,allocRole} from '@/api/login';
+    import {fetchAllRoleList} from '@/api/role';
     import {formatDate} from '@/utils/date';
-    import {fetchList,deleteApply} from '@/api/returnApply';
     const defaultListQuery = {
         pageNum: 1,
         pageSize: 10,
-        id: null,
-        receiverKeyword: null,
-        status: null,
-        createTime: null,
-        handleMan: null,
-        handleTime: null
+        keyword: null
     };
-    const defaultStatusOptions=[
-        {
-            label: '待处理',
-            value: 0
-        },
-        {
-            label: '退货中',
-            value: 1
-        },
-        {
-            label: '已完成',
-            value: 2
-        },
-        {
-            label: '已拒绝',
-            value: 3
-        }
-    ];
+    const defaultAdmin = {
+        id: null,
+        username: null,
+        password: null,
+        nickName: null,
+        email: null,
+        note: null,
+        status: 1
+    };
     export default {
-        name:'returnApplyList',
+        name: 'adminList',
         data() {
             return {
-                listQuery:Object.assign({},defaultListQuery),
-                statusOptions: Object.assign({},defaultStatusOptions),
-                list:null,
-                total:null,
-                listLoading:false,
-                multipleSelection:[],
-                operateType:1,
-                operateOptions: [
-                    {
-                        label: "批量删除",
-                        value: 1
-                    }
-                ],
+                listQuery: Object.assign({}, defaultListQuery),
+                list: null,
+                total: null,
+                listLoading: false,
+                dialogVisible: false,
+                admin: Object.assign({}, defaultAdmin),
+                isEdit: false,
+                allocDialogVisible: false,
+                allocRoleIds:[],
+                allRoleList:[],
+                allocAdminId:null
             }
         },
-        created(){
+        created() {
             this.getList();
+            this.getAllRoleList();
         },
-        filters:{
-            formatTime(time) {
-                if(time==null||time===''){
+        filters: {
+            formatDateTime(time) {
+                if (time == null || time === '') {
                     return 'N/A';
                 }
                 let date = new Date(time);
                 return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
-            },
-            formatStatus(status){
-                for(let i=0;i<defaultStatusOptions.length;i++){
-                    if(status===defaultStatusOptions[i].value){
-                        return defaultStatusOptions[i].label;
-                    }
-                }
-            },
-            formatReturnAmount(row){
-                return row.productRealPrice*row.productCount;
             }
         },
-        methods:{
-            handleSelectionChange(val){
-                this.multipleSelection = val;
-            },
+        methods: {
             handleResetSearch() {
                 this.listQuery = Object.assign({}, defaultListQuery);
             },
@@ -211,65 +207,135 @@
                 this.listQuery.pageNum = 1;
                 this.getList();
             },
-            handleViewDetail(index,row){
-                this.$router.push({path:'/oms/returnApplyDetail',query:{id:row.id}})
-            },
-            handleBatchOperate(){
-                if(this.multipleSelection==null||this.multipleSelection.length<1){
-                    this.$message({
-                        message: '请选择要操作的申请',
-                        type: 'warning',
-                        duration: 1000
-                    });
-                    return;
-                }
-                if(this.operateType===1){
-                    //批量删除
-                    this.$confirm('是否要进行删除操作?', '提示', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning'
-                    }).then(() => {
-                        let params = new URLSearchParams();
-                        let ids=[];
-                        for(let i=0;i<this.multipleSelection.length;i++){
-                            ids.push(this.multipleSelection[i].id);
-                        }
-                        params.append("ids",ids);
-                        deleteApply(params).then(response=>{
-                            this.getList();
-                            this.$message({
-                                type: 'success',
-                                message: '删除成功!'
-                            });
-                        });
-                    })
-                }
-            },
-            handleSizeChange(val){
+            handleSizeChange(val) {
                 this.listQuery.pageNum = 1;
                 this.listQuery.pageSize = val;
                 this.getList();
             },
-            handleCurrentChange(val){
+            handleCurrentChange(val) {
                 this.listQuery.pageNum = val;
                 this.getList();
             },
-            getList(){
-                this.listLoading=true;
+            handleAdd() {
+                this.dialogVisible = true;
+                this.isEdit = false;
+                this.admin = Object.assign({},defaultAdmin);
+            },
+            handleStatusChange(index, row) {
+                this.$confirm('是否要修改该状态?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    updateStatus(row.id, {status: row.status}).then(response => {
+                        this.$message({
+                            type: 'success',
+                            message: '修改成功!'
+                        });
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '取消修改'
+                    });
+                    this.getList();
+                });
+            },
+            handleDelete(index, row) {
+                this.$confirm('是否要删除该用户?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deleteAdmin(row.id).then(response => {
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.getList();
+                    });
+                });
+            },
+            handleUpdate(index, row) {
+                this.dialogVisible = true;
+                this.isEdit = true;
+                this.admin = Object.assign({},row);
+            },
+            handleDialogConfirm() {
+                this.$confirm('是否要确认?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    if (this.isEdit) {
+                        updateAdmin(this.admin.id,this.admin).then(response => {
+                            this.$message({
+                                message: '修改成功！',
+                                type: 'success'
+                            });
+                            this.dialogVisible =false;
+                            this.getList();
+                        })
+                    } else {
+                        createAdmin(this.admin).then(response => {
+                            this.$message({
+                                message: '添加成功！',
+                                type: 'success'
+                            });
+                            this.dialogVisible =false;
+                            this.getList();
+                        })
+                    }
+                })
+            },
+            handleAllocDialogConfirm(){
+                this.$confirm('是否要确认?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    let params = new URLSearchParams();
+                    params.append("adminId", this.allocAdminId);
+                    params.append("roleIds", this.allocRoleIds);
+                    allocRole(params).then(response => {
+                        this.$message({
+                            message: '分配成功！',
+                            type: 'success'
+                        });
+                        this.allocDialogVisible = false;
+                    })
+                })
+            },
+            handleSelectRole(index,row){
+                this.allocAdminId = row.id;
+                this.allocDialogVisible = true;
+                this.getRoleListByAdmin(row.id);
+            },
+            getList() {
+                this.listLoading = true;
                 fetchList(this.listQuery).then(response => {
                     this.listLoading = false;
                     this.list = response.data.list;
                     this.total = response.data.total;
                 });
+            },
+            getAllRoleList() {
+                fetchAllRoleList().then(response => {
+                    this.allRoleList = response.data;
+                });
+            },
+            getRoleListByAdmin(adminId) {
+                getRoleByAdmin(adminId).then(response => {
+                    let allocRoleList = response.data;
+                    this.allocRoleIds=[];
+                    if(allocRoleList!=null&&allocRoleList.length>0){
+                        for(let i=0;i<allocRoleList.length;i++){
+                            this.allocRoleIds.push(allocRoleList[i].id);
+                        }
+                    }
+                });
             }
         }
     }
 </script>
-<style scoped>
-  .input-width {
-    width: 203px;
-  }
-</style>
-
-
+<style></style>
