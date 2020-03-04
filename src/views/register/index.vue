@@ -209,6 +209,11 @@
                                 type: "success",
                                 duration: 3000
                             })
+                            this.$message({
+                                message: "该功能暂时停用，创建的用户无任何权限",
+                                type: "success",
+                                duration: 3000
+                            })
                         }).catch(() => {
                             this.loading = false
                         })

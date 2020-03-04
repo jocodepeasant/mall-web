@@ -46,12 +46,12 @@ export const constantRouterMap = [
         component: () => import('@/views/sys/admin/index'),
         meta: {title: '用户管理', icon: 'admin'}
       },
-      {
+      /*{
         path: 'log',
         name: 'log',
         component: () => import('@/views/sys/log/index'),
         meta: {title: '操作日志',icon:'log'},
-      },
+      },*/
       {
         path: 'role',
         name: 'role',
@@ -242,12 +242,12 @@ export const constantRouterMap = [
         meta: {title: '发货列表'},
         hidden:true
       },
-      {
+      /*{
         path: 'orderSetting',
         name: 'orderSetting',
         component: () => import('@/views/oms/order/setting'),
         meta: {title: '订单设置', icon: 'order-setting'}
-      },
+      },*/
       {
         path: 'returnApply',
         name: 'returnApply',
@@ -276,7 +276,7 @@ export const constantRouterMap = [
     name: 'sms',
     meta: {title: '营销', icon: 'sms'},
     children: [
-      {
+      /*{
         path: 'flash',
         name: 'flash',
         component: () => import('@/views/sms/flash/index'),
@@ -302,7 +302,7 @@ export const constantRouterMap = [
         component: () => import('@/views/sms/flash/productRelationList'),
         meta: {title: '秒杀商品列表'},
         hidden:true
-      },
+      },*/
       {
         path: 'coupon',
         name: 'coupon',
